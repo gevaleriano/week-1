@@ -12,7 +12,7 @@ Para instalar y descargar todas las dependencias necesarias deben ejecutar el si
 $ npm install
 ```
 ## Agregar un nuevo archivo
-Para poder agregar un nuevo archivo al directorio de la aplicación debera ejecutar el comando sed continuo al nombre del archivo con su respectiva extensión, seguido de la opcion **--newln** o su shortcut **-n** con un valor de texto sin espacios, si desea cadena con espacio encierre el contenido en comillas dobles o simples.
+Para poder agregar un nuevo archivo al directorio de la aplicación debera ejecutar el comando sed continuo al nombre del archivo con su respectiva extensión, seguido de la opcion **--newLine** o su shortcut **-n** con un valor de texto sin espacios, si desea cadena con espacio encierre el contenido en comillas dobles o simples.
 ```linux
 $ node app sed archivo.txt -n 'Mi primer linea en el documento'
 ```

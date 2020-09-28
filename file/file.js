@@ -1,82 +1,85 @@
-const fs = require('fs');
+const fs = require("fs");
 
 class FileReader {
   file;
   fileInfo = [];
   constructor(fileName) {
     this.file = fileName;
-  };
+  }
 
-  loadFile(){
-    try{
-      return fs.readFileSync(this.file, 'utf8');
-    }catch(err){
+  loadFile() {
+    try {
+      return fs.readFileSync(this.file, "utf8");
+    } catch (error) {
+      console.log("error");
       return [];
     }
-  };
 
-  getFile(){
-    return this.loadFile().toString().split('\n');
-  };
+    return [];
+  }
 
-  viewFile(){
+  getFile() {
+    return this.loadFile().toString().split("\n");
+  }
+
+  viewFile() {
     return this.loadFile();
-  };
+  }
 
-  saveFile(file){
-    fs.writeFileSync(this.file, file.join('\n'), (err) => {
-      if (err) throw new Error('No se pudo grabar', err);
+  saveFile(file) {
+    fs.writeFileSync(this.file, file.join("\n"), (error) => {
+      if (error) throw new Error("No se pudo grabar", error);
     });
-  };
+  }
 
-  replaceText(regex){
-    try{
-      this.rango = [];
-      if(typeof(regex) === 'string'){
-        this.rango.push(regex);
-      }
-      else
-      {
-        this.rango = regex;
+  replaceText(regularExpression) {
+    try {
+      this.range = [];
+      if (typeof regularExpression === "string") {
+        this.range.push(regularExpression);
+      } else {
+        this.range = regularExpression;
       }
 
-      this.rango.forEach(req => {
-        
+      this.range.forEach((req) => {
         this.fileInfo = this.loadFile();
 
-        this.values = req.split('/');
-        this.cadena1 = new RegExp(this.values[1],this.values[0]);
-        this.cadena2 = this.values[2].toString();
-        this.temp = this.fileInfo.toString().replace(this.cadena1,this.cadena2);
-        this.saveFile(this.temp.toString().split('\n'));
+        this.values = req.split("/");
+        this.wordToFind = new RegExp(this.values[1], this.values[0]);
+        this.wordToReplace = this.values[2].toString();
 
-        return 'Acción con exito';
+        this.saveFile(
+          this.fileInfo
+            .toString()
+            .replace(this.wordToFind, this.wordToReplace)
+            .toString()
+            .split("\n")
+        );
+
+        return "Acción con exito";
       });
-      
-    }catch(err){
-      return 'No se puedo reemplazar cadena';
+    } catch (error) {
+      return "No se puedo reemplazar cadena";
     }
-  };
+  }
 
-  newLine(content){
-    try{
-      if(content === true)
-        content = ' ';
+  newLine(content) {
+    try {
+      content = content === true ? " " : content;
 
       this.fileInfo = this.loadFile();
-      this.temp = [];
-      if(this.fileInfo.length){
-        this.temp = this.fileInfo.toString().split('\n');
-      }
-        
-      this.temp.push(content);
-      this.saveFile(this.temp);
-      return 'Acción con exito';      
-    }catch(err){
-      return `No se puedo modificar el archivo: ${ this.file}`;
-    };
-  };
 
+      const splittedFile =
+        this.fileInfo.length > 0
+          ? [this.fileInfo.toString().split("\n"), content]
+          : [content];
+      this.saveFile(splittedFile);
+
+      return "Acción con exito";
+    } catch (err) {
+      return `No se puedo modificar el archivo: ${this.file}`;
+    }
+  }
 }
 
 module.exports = {
